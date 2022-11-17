@@ -1,4 +1,4 @@
-interface RecordBand {
+export interface RecordBand {
   recordName: string;
   bandFestivals: BandFestival[];
 }
