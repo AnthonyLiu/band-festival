@@ -7,6 +7,7 @@ function App() {
 
   return (
     <div className="App">
+      <h1>Festival schedule for Bands in each Record Label:</h1>
       <RecordBandFestivalList recordBandList={recordList}/>
     </div>
   );
