@@ -8,9 +8,9 @@ describe('getRecordBandFestival', () => {
   });
 })
 
-describe.only('transformToRecordBandFestival', () => {
+describe('transformToRecordBandFestival', () => {
   test('should return correct data', () => {
     const result = transformToRecordBandFestival(festivals);
-    expect(result).not.toBeNull();
+    expect(result).toEqual([{"bandFestivals": [{"bandName": "Band X", "festivals": ["Omega Festival"]}, {"bandName": "Band Y", "festivals": ["Alpha Festival"]}, {"bandName": "Band Z", "festivals": ["Omega Festival"]}], "recordName": "Record Label 1"}, {"bandFestivals": [{"bandName": "Band A", "festivals": ["Alpha Festival", "Beta Festival"]}], "recordName": "Record Label 2"}]);
   });
 })
