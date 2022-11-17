@@ -30,7 +30,7 @@ export const getRecordBandFestival = (): RecordBand[] => {
       recordName: 'Record Label 2',
       bandFestivals: [
         {
-          bandName: 'Band 1',
+          bandName: 'Band A',
           festivals: [
             'Alpha Festival',
             'Beta Festival',
