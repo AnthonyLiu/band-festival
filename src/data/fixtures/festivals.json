@@ -5,6 +5,10 @@
       {
         "name": "Band A",
         "recordLabel": "Record Label 2"
+      },
+      {
+        "name": "Band Y",
+        "recordLabel": "Record Label 1"
       }
     ]
   },
@@ -22,6 +26,10 @@
     "bands": [
       {
         "name": "Band X",
+        "recordLabel": "Record Label 1"
+      },
+      {
+        "name": "Band Z",
         "recordLabel": "Record Label 1"
       }
     ]

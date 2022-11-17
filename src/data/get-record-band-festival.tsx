@@ -1,4 +1,5 @@
-import * as festivals from "./fixtures/festivals.json";
+import festivals from "./fixtures/festivals.json";
+import { merge, keys, values, concat } from "lodash";
 
 // data response structure from API
 interface MusicFestival {
@@ -23,41 +24,58 @@ interface BandFestival {
 
 // get data for fronted
 export const getRecordBandFestival = (): RecordBand[] | {} => {
-  let responseData: MusicFestival[] | null = null;
+  let responseData: MusicFestival[] = [];
 
   try {
     responseData = festivals as MusicFestival[];
   } catch (error) {
-    // should use proper logger
-    console.log(error);
+    // TODO: should use proper logger
   }
 
-  return [
-    {
-      recordName: 'Record Label 1',
-      bandFestivals: [
-        {
-          bandName: 'Band X',
-          festivals: [
-            'Omega Festival',
-          ]
-        },
-        {
-          bandName: 'Band Y',
-          festivals: [],
-        }
-      ]
-    }, {
-      recordName: 'Record Label 2',
-      bandFestivals: [
-        {
-          bandName: 'Band A',
-          festivals: [
-            'Alpha Festival',
-            'Beta Festival',
-          ],
-        }
-      ]
+  return transformToRecordBandFestival(responseData);
+}
+
+export const transformToRecordBandFestival = (responseData: MusicFestival[]): RecordBand[] => {
+  let flatArr: object[] = [];
+  let recordBandsObj: object = {};
+  let recordBands: RecordBand[] = [];
+
+  // flatten the response object to object array
+  responseData?.map(festival => {
+    const festName = festival.name;
+    festival.bands.map(band => flatArr.push({ [band.recordLabel]: { [band.name]: festName } }))
+  })
+
+  // deep merge objects array
+  flatArr.map(item => {
+    const itemKey = keys(item)[0];
+    const itemValue = values(item)[0];
+    if (recordBandsObj[itemKey] === undefined) {
+      recordBandsObj[itemKey] = itemValue;
+    } else {
+      const bandKey = keys(itemValue)[0];
+      if (recordBandsObj[itemKey][bandKey] === undefined) {
+        merge(recordBandsObj[itemKey], itemValue);
+      } else {
+        recordBandsObj[itemKey][bandKey] = concat(recordBandsObj[itemKey][bandKey], itemValue[bandKey])
+      }
     }
-  ];
+  })
+
+  // build JSON object required by frontend
+  Object.entries(recordBandsObj).sort().forEach(record => {
+    const [key, value] = record;
+
+    // build band festival object array
+    let bandFestivals: BandFestival[] = [];
+    Object.entries(value).sort().forEach(band => {
+      const [key, value] = band;
+      const festivalsArr = typeof value === 'string' ? [value] : value;
+      bandFestivals.push({ bandName: key, festivals: (festivalsArr as string[]).sort() })
+    });
+
+    recordBands.push({ recordName: key, bandFestivals: bandFestivals })
+  });
+
+  return recordBands;
 }
