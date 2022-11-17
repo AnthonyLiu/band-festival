@@ -10,13 +10,13 @@ const RecordBandFestivalList = (props: RecordBandFestivalListProps) => {
   const recordBandList = props.recordBandList;
 
   return <div>
-    {recordBandList.map(recordBand => {
+    {recordBandList?.map(recordBand => {
       return (<>
         <h3 className={styles.h3}>{recordBand.recordName}</h3>
-        {recordBand.bandFestivals.map(bandFes => {
+        {recordBand.bandFestivals?.map(bandFes => {
           return <>
             <h4 className={styles.h4}>{bandFes.bandName}</h4>
-            {bandFes.festivals.map(festival => {
+            {bandFes.festivals?.map(festival => {
               return <p className={styles.p}>{festival}</p>
             })}
           </>;
